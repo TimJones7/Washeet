@@ -96,9 +96,71 @@ CREATE TABLE IF NOT EXISTS Menu_Items(
 );
 -- ----------------------------------------------------
 
+-- Menu Item Flags Table
+-- ----------------------------------------------------
+DROP TABLE IF EXISTS Menu_Item_Flags;
+CREATE TABLE IF NOT EXISTS Menu_Item_Flags(
+	Flag_id INT NOT NULL auto_increment,
+	Flag_script VARCHAR(50) NOT NULL,
+	PRIMARY KEY(Flag_id)  
+);
+-- ----------------------------------------------------
 
+-- Menu Item Flag Configs Table
+-- ----------------------------------------------------
+DROP TABLE IF EXISTS Menu_Item_Flag_Configs;
+CREATE TABLE IF NOT EXISTS Menu_Item_Flag_Configs(
+	Menu_item_id INT NOT NULL,
+	Flag_id INT NOT NULL,
+	Start_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	End_date DATETIME,
+	CONSTRAINT Menu_item_id 
+		FOREIGN KEY(Menu_item_id) 
+		REFERENCES Menu_Items(Menu_item_id)
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION,
+	CONSTRAINT Flag_id 
+		FOREIGN KEY(Flag_id) 
+		REFERENCES Menu_Item_Flags(Flag_id)
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+);
+-- ----------------------------------------------------
 
+-- Menu Item Recipe Table
+-- ----------------------------------------------------
+DROP TABLE IF EXISTS Menu_Item_Recipe;
+CREATE TABLE IF NOT EXISTS Menu_Item_Recipe(
+	Menu_item_id INT NOT NULL,
+	Ingredient_id INT NOT NULL,
+    Ingredient_amount INT NOT NULL,
+	Start_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	End_date DATETIME,
+	CONSTRAINT Menu_item_id 
+		FOREIGN KEY(Menu_item_id) 
+		REFERENCES Menu_Items(Menu_item_id)
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION,
+	CONSTRAINT Ingredient_id 
+		FOREIGN KEY(Ingredient_id) 
+		REFERENCES Ingredient_Inv(Ingredient_id)
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+);
+-- ----------------------------------------------------
 
-
-
-
+-- Menu Item Pricing Table
+-- ----------------------------------------------------
+DROP TABLE IF EXISTS Menu_Item_Pricing;
+CREATE TABLE IF NOT EXISTS Menu_Item_Pricing(
+	Menu_item_id INT NOT NULL,
+	Cost DECIMAL(4,2) NOT NULL,
+	Start_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	End_date DATETIME,
+	CONSTRAINT Menu_item_id 
+		FOREIGN KEY(Menu_item_id) 
+		REFERENCES Menu_Items(Menu_item_id)
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+);
+-- ----------------------------------------------------
